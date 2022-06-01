@@ -14,14 +14,12 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AppsIcon from '@material-ui/icons/Apps';
 import AddIcon from '@material-ui/icons/Add';
 import {useCollection} from 'react-firebase-hooks/firestore';
-import { db } from '../firebase';
-
+import { db, auth } from '../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 function SideBar() {
 	const [channels, loading, error] = useCollection(db.collection("rooms"));
-	// console.log("channels", channels);
-	
-	channels?.docs.map((doc) => console.log(doc.id))
+	const [user] = useAuthState(auth)
 	
 	return (
 		<SidebarContainer>
@@ -30,7 +28,7 @@ function SideBar() {
 					<h2>PAPA FAM HQ</h2>
 					<h3>
 						<FiberManualRecordIcon />
-						Bahubali Ak
+						{user?.displayName}
 					</h3>
 				</SidebarInfo>
 				<CreateIcon />
@@ -66,7 +64,7 @@ const SidebarContainer = styled.div`
 	border-top: 1px solid #49274b;
 	max-width: 260px;
 	margin-top: 60px;
-
+	overflow-y: hidden;
 	> hr {
 		margin-top: 10px;
 		margin-bottom: 10px;
